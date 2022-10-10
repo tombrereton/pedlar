@@ -1,0 +1,32 @@
+---
+title: When To Use Event Sourcing (Event Sourcing Part 1)
+date: "2022-10-07"
+draft: true
+---
+
+## What is Event Sourcing
+Instead of only storing the current state and mutating it, we store state as a sequence of events (or changes).
+
+## How It Works
+- Append only event store.
+- Publish events for consumers.
+- Application code for generating events is seperate to code which subscribes to events (strong decoupling).
+
+## When To Use Event Sourcing
+**Problem**: Reading & writing with the same system can slow performance and limit 
+scability as the same system is handling both these jobs.
+**Solution**: Event sourcing uses separate systems to write & read the data.
+
+**Problem**: Multiple processes updating the same row of data can either lead to 
+corrupted data or degraded performance due to data locking.
+**Solution**: Event Sourcing appends events so there is no need to lock data.
+
+**Problem**: Sometimes we want to know how we reached our current state e.g. 
+if the price of a t-shirt was $100 but is now $40. Without Event Sourcing 
+we would only know that it's $40 but not what it was previously or why it's now $40.
+**Solution**: With Event Sourcing we store a series of events with metadata e.g. 
+"Initial Price: $100", then "Reduced Price for Clearance: $40". 
+Using a series of events allows us to understand how we reached our current state.
+
+**Problem**: Regular data stores have no built-in audit trail.
+**Solution**: Storing a series of events provides a natural audit trail.

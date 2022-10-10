@@ -1,0 +1,23 @@
+---
+title: My Programming Tips & Tricks
+date: "2022-10-05T12:00:00Z"
+---
+
+Here are some programming best practices, tips and guidance I've collected over the years. I aim to keep each point as concise as possible so that I can use it as reference material in the future.
+
+## Tips & Tricks
+1. Write so every function can be understood within 1 minute. If you have to get into the Zone, it’s a sign of smelly code
+2. Write code that is (stupidly) obvious and readable by future programmers, don’t use clever tricks. 
+3. Keep your style and naming convention **consistent**, a project/solution is much easier to read with consistent naming on class, methods, tests. Try using a team shared [EditorConfig](https://editorconfig.org).
+4. Understand the problem & solution before coding. TDD forces this. 
+5. If you don't understand the problem or solution build a simple prototype. Then stop working on the prototype as soon as you understand.
+6. Use exploratory tests if you don't understand how something works e.g. a third party api.
+7. Design programs with reusable, modular layers 
+8. Learn when to use CRUD, Clean Architecture, Event Driven Architecture, Event Sourcing, etc. There are times for simple architecture, times for complex and sometimes solutions are comprised of both.
+9. Use the correct tool for the job, this may take some investigation into the trade-offs between tools i.e. C# vs Python, Serverless vs Microservices. 
+10. Design **everything** to be testable from the beginning (test first). Design your solution to be test first, application to be test first, code test first ... you get the idea. There are many **reasons** why.
+11. Don't optimise until it works.
+12. Classes should be highly cohesive (all field variables are used in functions). Break the class apart when field variables are used sporadically.
+13. It’s better to have lots of small classes than a class with lots of small functions
+14. Use integration tests for database code, this tests the query language (e.g. SQL), database schema, and the connection. Remember to setup and teardown test data.
+16. Use unit tests for as much as possible but they are especially useful for edge cases and exceptions.
