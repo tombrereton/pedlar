@@ -35,12 +35,8 @@ module.exports = {
         ],
         externalLinks: [
           {
-            name: `Twitter`,
-            url: `https://twitter.com/_tombrereton`,
-          },
-          {
-            name: `Homepage`,
-            url: `https://pedlar.io`,
+            name: `Github`,
+            url: `https://github.com/tombrereton`,
           },
         ],
       },
