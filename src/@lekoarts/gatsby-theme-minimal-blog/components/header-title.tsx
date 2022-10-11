@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { Link, graphql, useStaticQuery } from "gatsby";
-import { jsx } from "theme-ui";
+import { jsx, useColorMode } from "theme-ui";
 import { StaticImage } from "gatsby-plugin-image";
 import replaceSlashes from "@lekoarts/gatsby-theme-minimal-blog/src/utils/replaceSlashes";
 import useSiteMetadata from "@lekoarts/gatsby-theme-minimal-blog/src/hooks/use-site-metadata";
@@ -9,15 +9,22 @@ import useMinimalBlogConfig from "@lekoarts/gatsby-theme-minimal-blog/src/hooks/
 const HeaderTitle = () => {
   const { siteTitle } = useSiteMetadata();
   const { basePath } = useMinimalBlogConfig();
-  const data = useStaticQuery(graphql`
-    query MyQuery {
-      site {
-        siteMetadata {
-          siteImage
-        }
-      }
-    }
-  `);
+  const [colorMode, setColorMode] = useColorMode();
+  const isDark = colorMode === `dark`;
+
+  const blackLogo = <StaticImage
+      width={30}
+      objectFit="contain"
+      src="../../../imgs/pedlar-logo-black.svg"
+      alt="Pedlar Logo"
+    />
+
+  const whiteLogo = <StaticImage
+      width={30}
+      objectFit="contain"
+      src="../../../imgs/pedlar-logo-white.svg"
+      alt="Pedlar Logo"
+    />
 
   return (
     <Link
@@ -30,12 +37,7 @@ const HeaderTitle = () => {
         flexDirection: `row`,
       }}
     >
-      <StaticImage
-        width={30}
-        objectFit="contain"
-        src="../../../imgs/pedlar-logo-black.svg"
-        alt="Pedlar Logo"
-      />
+      {isDark ? whiteLogo : blackLogo}
       <div
         sx={{
           my: 0,
