@@ -2,7 +2,7 @@
 title: Easy Static Web App & Azure Function Development
 date: 2022-05-17
 tags:
-  - Azure
+- azure
 ---
 
 
