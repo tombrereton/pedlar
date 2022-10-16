@@ -5,7 +5,6 @@ tags:
 - azure
 ---
 
-
 ## Introduction
 Running a full stack application locally can be tricky and awkward. In this article we show you how to get a Static Web App talking to an Azure Function locally, using the SWA CLI. The SWA CLI is a local developer tool for Azure Static Web Apps and some things it can do are:
 - Serve static app assets, or proxy to your app dev server

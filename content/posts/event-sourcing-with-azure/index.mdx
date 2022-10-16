@@ -7,35 +7,38 @@ tags:
 ---
 
 ## Introduction
-In Part 1 we identified what Event Sourcing is and some common use cases. In this article we'll explore what Azure resources you can use for an building out an Event Sourcing solution and why they were chosen.
+In Part 1 we identified what Event Sourcing is and some common use cases. 
+In this article we'll explore what Azure resources you can use for an building out an Event Sourcing solution and why they were chosen.
 
 ## Azure Resources
-For the data store we'll use Azure Cosmos DB. To learn more about it check out the links below:
+For the data store we'll use **Azure Cosmos DB**.
 - [Learn Azure Cosmos DB](https://learn.microsoft.com/en-us/training/modules/explore-azure-cosmos-db/)
 - [Cosmos DB Documentation](https://learn.microsoft.com/en-au/azure/cosmos-db/)
 
-For the application we'll use Azure Functions. To learn more about it check out the links below:
+For the application we'll use **Azure Functions**. To learn more about it check out the links below:
+- [Azure Functions Documentation](https://learn.microsoft.com/en-us/azure/azure-functions/)
+- [Learn Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob)
 
-#### Cosmos DB:
+#### Why Cosmos DB:
 - Serverless mode for handling unpredictable traffic (can scale up and down)
 - It's great for append only operations
 - It's also great for read or write only
 - Flexible schema (schemaless)
 - Charges only for storage when it's inactive
 
-#### Azure Function:
+#### Why Azure Function:
 - Serverless mode for handling unpredictable traffic
 - Designed to react to events
 - Low total cost of operation (TCO) as it only charges when in use
 
 ## How to Connect Cosmos DB to Azure Function
-Using the Cosmos DB feature, **Change Feed**. It's like an RSS feed for the data and it outputs an ordered list of documents. Azure Functions have bindings which allows them to listen to the Change Feed.
+Using the Cosmos DB feature, **Change Feed**. It's like an RSS feed for the data and it outputs an ordered list of documents. 
+Azure Functions have bindings which allows them to listen to the Change Feed.
 
-Monitored Collection
+- [Cosmos DB Trigger](https://.microsoft.com/en-us/azure/azure-functions/functions-create-cosmos-db-triggered-function)
 
 ## Event Sourcing Tips & Gotchas
 - Eventual Consistency
-- No out-of-band updates to event store
 - Event format vital
 - Order of events vital
 - Create snapshots for long streams
