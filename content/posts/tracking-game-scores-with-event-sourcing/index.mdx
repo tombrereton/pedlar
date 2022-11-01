@@ -96,8 +96,8 @@ public record GameTerminated(long PlayerId, string PlayerName, long GameScore) :
 ### Top 10 Materialised View
 The materialised view we are building is to quickly view the top 10 players of the game. 
 This avoids aggregating over potentially millions of events and causing an expensive query, 
-both in terms of money and computation. In this case of the Top 10 Materialised View we don’t 
-see much benefit over instead calling `MAX(10)`on the data, but I believe it is a good demonstration of 
+both in terms of money and computation. In this case, the Materialised View 
+doesn't provide much benefit over calling `MAX(10)`on the data, but I believe it is a good demonstration of 
 how to implement event sourcing and a materialised view.
 
 To set up this materialised view we will create an Azure Function with a Cosmos DB trigger. 
@@ -106,8 +106,10 @@ This trigger will start the function every time an event is saved to the Cosmos 
 Process:
 1. Validate incoming data
 2. Map data to `PlayerScore` entity
-3. If PlayerScore is higher than any of the scores in the `TopTenScores` collection, then insert it in the correct position
-4.  else, ignore `PlayerScore`
+3. If PlayerScore is higher than any of the scores in the `TopTenScores` collection, then insert it in the correct position.
+4. Else if the Player is already in the top 10 and it is a higher score, remove the old `PlayerScore` and insert it in the correct position.
+5. Else if, there are less than 10 `PlayerScores` and less than the existing `PlayerScores`, insert it in the end.
+5. Else, ignore `PlayerScore`
 
 ### Scores Api
 An Azure Function which has the following endpoint.
