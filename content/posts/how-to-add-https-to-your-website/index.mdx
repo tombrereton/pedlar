@@ -1,0 +1,25 @@
+---
+title: How to add Https to your website
+date: 2022-11-01
+tags:
+- web
+- security
+---
+
+1. Purchase SSL certificate, *e.g. bought mine through Namecheap*
+2. Generate CSR and key on server 
+		1. `ssh in`, `install SSL`, `run SSL cmd` and `download output`
+    2. example SSL command: `openssl req -new -newkey rsa:2048 -nodes -out yoursite_com.csr -keyout yoursite_com.key -subj "/CN=yoursite.com"`
+    3. [Stackoverflow: How to create a csr file for azure web app](https://stackoverflow.com/questions/35409127/how-to-create-a-csr-file-for-azure-web-app)
+3. Verify ssl with csr, *e.g. copy csr and paste into namecheap*
+4. Activate ssl by selecting method, *e.g. I chose whois email which forwards onto your actual email*
+5. Download package which contains the files: `.ca-bundle`, `.crt`, `.p7b`
+6. Azure needs a `pfx` (or `pkcs#12`) file, use online tool to convert `.p7b`, `.key`, and any password to a `pfx`, [decoder.link/converter](https://decoder.link/converter)
+    1. At the link above use `PEM` to `PKCS#12`
+    2. OpenSSL also generated `.key` file when running the command before, locate this file and upload it to the converter page as the key file
+    3. Upload the `.cert` file from the package for Certificate file
+    4. Upload the `.ca-bundle` file from the package for the Bundle file
+    5. Enter a password which will be used when uploading the `PFX` file
+7. Go to Azure, go to the app, then TLS/SSL settings, click Private key certificates (`.pfx`) then Upload certificate
+8. Upload generated pfx file and enter the same password as in step 6.5
+9. Done!
