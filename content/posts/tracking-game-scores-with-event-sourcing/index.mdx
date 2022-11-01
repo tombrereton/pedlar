@@ -6,6 +6,18 @@ tags:
 - azure
 ---
 
+- [Introduction](#introduction)
+- [Logical Flow](#logical-flow)
+- [Components](#components)
+  - [Game Event Api](#game-event-api)
+  - [Game Events Datastore](#game-events-datastore)
+  - [Top 10 Materialised View](#top-10-materialised-view)
+  - [Scores Api](#scores-api)
+- [Conclusion](#conclusion)
+
+
+
+
 ## Introduction
 In this post we’ll use our knowledge from the previous articles to build a simple Event Sourcing solution. 
 
@@ -51,7 +63,7 @@ With a response:
 3. A **Top 10 Materialised View** of the games scores, this will be an Azure Function with a Cosmos DB Trigger.
 4. A **Scores Api** that will expose the Top 10 Players of the Game, this will be another Azure Function.
 
-## Game Event Api
+### Game Event Api
 An Azure Function which has the following endpoint.
 ```json
 POST /api/gameterminated 
@@ -70,7 +82,7 @@ Process:
 2. Maps data to database entity
 3. Saves entity to **Game Events Datastore**
 
-## Game Events Datastore 
+### Game Events Datastore 
 A Cosmos DB which saves all the Game Events. In this case we have only implemented the `GameTerminated` event. If we had more than one event, we would have an abstract parent event class for the standard properties and inherit it into concrete class such as `GameTerminated`.
 
 The Cosmos DB will have 1 collection called `Event`, in which all the events are stored. A `GameTerminated` event will map to this type:
@@ -81,7 +93,7 @@ public abstract record GameEvent(long PlayerId, string PlayerName);
 public record GameTerminated(long PlayerId, string PlayerName, long GameScore) : GameEvent(PlayerId, PlayerName);
 ```
 
-## Top 10 Materialised View
+### Top 10 Materialised View
 The materialised view we are building is to quickly view the top 10 players of the game. 
 This avoids aggregating over potentially millions of events and causing an expensive query, 
 both in terms of money and computation. In this case of the Top 10 Materialised View we don’t 
@@ -97,7 +109,7 @@ Process:
 3. If PlayerScore is higher than any of the scores in the `TopTenScores` collection, then insert it in the correct position
 4.  else, ignore `PlayerScore`
 
-## Scores Api
+### Scores Api
 An Azure Function which has the following endpoint.
 ```json
 GET /api/toptenscores
