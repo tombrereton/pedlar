@@ -1,0 +1,127 @@
+---
+title: Tracking Game Scores with Event Sourcing (Event Sourcing Part 3)
+date: 2022-10-29
+tags:
+- system design
+- azure
+---
+
+## Introduction
+In this post we’ll use our knowledge from the previous articles to build a simple Event Sourcing solution. 
+
+We will be building a Scoring System for a Computer Game e.g. Candy Crush. It’s main purpose is to record player scores, and then
+to expose the top 10 scores with the corresponding player names.
+
+## Logical Flow
+The main flow of this system is that when a player finishes the game, a `GameTerminated` event is saved to the datastore. This event looks like:
+
+```json
+{
+  PlayerId: 1,
+  PlayerName: "MajorLazer",
+  GameScore: 999
+}
+```
+
+Once the `GameTerminated` event is saved to the datastore, a process is triggered to recalculate a materialised view. This materialised view is the Top 10 Players of the game.
+
+A Http Rest Api exposes the “Top 10 Materialised View” at:
+```bash
+GET /api/toptenscores
+```
+
+With a response:
+```json
+[
+  {
+    PlayerName: "MajorLazer",
+    GameScore: 999
+  },
+  {
+    PlayerName: "MinorLazer",
+    GameScore: 888
+  }
+  ...
+]
+```
+
+## Components
+1. **Game Events Api** for `GameTerminated` events, this will be hosted on an Azure Function.
+2. A **Game Events Datastore**, this will be Cosmos DB.
+3. A **Top 10 Materialised View** of the games scores, this will be an Azure Function with a Cosmos DB Trigger.
+4. A **Scores Api** that will expose the Top 10 Players of the Game, this will be another Azure Function.
+
+## Game Event Api
+An Azure Function which has the following endpoint.
+```json
+POST /api/gameterminated 
+
+{
+  PlayerId: 1,
+  PlayerName: "MajorLazer",
+  GameScore: 999
+}
+
+Response: 201 Created, 400 Bad Request
+```
+
+Process:
+1. Validates incoming data
+2. Maps data to database entity
+3. Saves entity to **Game Events Datastore**
+
+## Game Events Datastore 
+A Cosmos DB which saves all the Game Events. In this case we have only implemented the `GameTerminated` event. If we had more than one event, we would have an abstract parent event class for the standard properties and inherit it into concrete class such as `GameTerminated`.
+
+The Cosmos DB will have 1 collection called `Event`, in which all the events are stored. A `GameTerminated` event will map to this type:
+
+```cs
+public abstract record GameEvent(long PlayerId, string PlayerName);
+
+public record GameTerminated(long PlayerId, string PlayerName, long GameScore) : GameEvent(PlayerId, PlayerName);
+```
+
+## Top 10 Materialised View
+The materialised view we are building is to quickly view the top 10 players of the game. 
+This avoids aggregating over potentially millions of events and causing an expensive query, 
+both in terms of money and computation. In this case of the Top 10 Materialised View we don’t 
+see much benefit over instead calling `MAX(10)`on the data, but I believe it is a good demonstration of 
+how to implement event sourcing and a materialised view.
+
+To set up this materialised view we will create an Azure Function with a Cosmos DB trigger. 
+This trigger will start the function every time an event is saved to the Cosmos DB Collection and call it with the latest event.
+
+Process:
+1. Validate incoming data
+2. Map data to `PlayerScore` entity
+3. If PlayerScore is higher than any of the scores in the `TopTenScores` collection, then insert it in the correct position
+4.  else, ignore `PlayerScore`
+
+## Scores Api
+An Azure Function which has the following endpoint.
+```json
+GET /api/toptenscores
+ 
+[
+  {
+    PlayerName: "MajorLazer",
+    GameScore: 999
+  },
+  {
+    PlayerName: "MinorLazer",
+    GameScore: 888
+  }
+  ...
+]
+
+
+Response: 200 Ok, 500 Server Error
+```
+
+Process:
+1. Get all data from `TopTenScores` collection in Cosmos DB
+2. Maps data to view model, to discard redundant properties
+3. Returns Top Ten Scores as a list
+
+## Conclusion
+In this post we have outlined the components needed to implement a simple Event Sourcing solution for a Game Scoring System. Given time I will update this article with a link to a Github Repository containing the C# code and Terraform to set it up. 
