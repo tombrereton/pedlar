@@ -26,7 +26,7 @@ module.exports = {
       resolve: `gatsby-plugin-umami`,
       options: {
         websiteId: "a3e05569-6303-4e4c-a028-2facb3f5d95b",
-        srcUrl: "https://aca-umami-app.whitedune-7d43ebdb.australiaeast.azurecontainerapps.io/umami.js",
+        srcUrl: "https://aca-umami-pdn--aca-umami-pdn-update-db.niceisland-1aacf1ae.australiaeast.azurecontainerapps.io/umami.js",
         includeInDevelopment: false,
         autoTrack: true,
         respectDoNotTrack: true,
