@@ -7,10 +7,17 @@ tags:
 
 ## What is Event Sourcing
 Instead of only storing the current state and mutating it, we store state as a sequence of events (or changes).
+A good way to visualize it is your current bank balance and past transactions. Let's say you start with $0, you deposit $100, 
+then you spend $30. This leaves you with $70. In Event Sourcing, each transaction (i.e. deposit and spend) is an `event`
+and to get the current state we combine them all ($0 + $100 - $30 = $70).
 
-## How It Works
-- Append only event store.
-- Publish events for consumers.
+## Core Concepts
+- Events represent something that happened in the past. For example, `MoneyDeposited` not a command like `DepisotMoney`, 
+events are more scalable whereas commands are tightly coupled to the downstream component.
+- You need an Event Store to store your events, for example a database.
+- Downstream components can subscribe to the Events.
+- You can map the data of events into different views, for example a table representing the top 10 bank transactions. 
+In Event Sourcing terms, this is called a materialised view.
 - Application code for generating events is seperate to code which subscribes to events (strong decoupling).
 
 ## When To Use Event Sourcing

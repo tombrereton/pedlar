@@ -1,6 +1,7 @@
 require(`dotenv`).config();
 
 const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE;
+const blogSlug = "blog"
 
 /**
  * @type {import('gatsby').GatsbyConfig}
@@ -39,7 +40,7 @@ module.exports = {
         navigation: [
           {
             title: `Blog`,
-            slug: `/blog`,
+            slug: `/${blogSlug}`,
           },
           {
             title: `About`,
@@ -50,6 +51,10 @@ module.exports = {
           {
             name: `Github`,
             url: `https://github.com/tombrereton`,
+          },
+          {
+            name: `LinkedIn`,
+            url: `https://www.linkedin.com/in/tbrereton`,
           },
         ],
       },

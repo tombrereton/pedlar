@@ -15,7 +15,7 @@ For the data store we'll use **Azure Cosmos DB**.
 - [Learn Azure Cosmos DB](https://learn.microsoft.com/en-us/training/modules/explore-azure-cosmos-db/)
 - [Cosmos DB Documentation](https://learn.microsoft.com/en-au/azure/cosmos-db/)
 
-For the application we'll use **Azure Functions**. To learn more about it check out the links below:
+For the application we'll use **Azure Functions**. 
 - [Azure Functions Documentation](https://learn.microsoft.com/en-us/azure/azure-functions/)
 - [Learn Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob)
 
@@ -28,14 +28,14 @@ For the application we'll use **Azure Functions**. To learn more about it check 
 
 #### Why Azure Function:
 - Serverless mode for handling unpredictable traffic
-- Designed to react to events
+- Designed to react to events, using event bindings
 - Low total cost of operation (TCO) as it only charges when in use
 
-## How to Connect Cosmos DB to Azure Function
-Using the Cosmos DB feature, **Change Feed**. It's like an RSS feed for the data and it outputs an ordered list of documents. 
+## How to subscribe to Events
+Using the Cosmos DB Trigger for Azure Functions. It's like an RSS feed for the data and it outputs an ordered list of documents. 
 Azure Functions have bindings which allows them to listen to the Change Feed.
 
-- [Cosmos DB Trigger](https://.microsoft.com/en-us/azure/azure-functions/functions-create-cosmos-db-triggered-function)
+- [Cosmos DB Trigger](https://learn.microsoft.com/en-us/azure/azure-functions/functions-create-cosmos-db-triggered-function)
 
 ## Event Sourcing Tips & Gotchas
 - Eventual Consistency
