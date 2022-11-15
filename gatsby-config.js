@@ -16,7 +16,7 @@ module.exports = {
     siteHeadline: `System Design Blog | Pedlar from Tom Brereton`,
     siteUrl: `https://pedlar.io`,
     siteDescription: `Typography driven, feature-rich blogging theme with minimal aesthetics. Includes tags/categories support and extensive features for code blocks such as live preview, line numbers, and line highlighting.`,
-    siteImage: `/Pedlar_SymbolWordmark_RGB_BLACK.png`,
+    siteImage: `/pedlar-logo-black.png`,
     author: `Tom Brereton`,
   },
   plugins: [
